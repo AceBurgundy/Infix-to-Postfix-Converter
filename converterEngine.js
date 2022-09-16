@@ -4,17 +4,13 @@ class Converter {
         let current = this.array.length - 1;
     }
 
-    print() {
-        return this.array
+    pushToStack(value) {
+        // since stack has no size, I will not be implementing a stack overflow check
+        this.stack.push(value)
     }
 
-    push(value) {
-        // since array has no size, I will not be implementing a stack overflow check
-        this.array.push(value)
-    }
-
-    pop() {
-        let popped = this.array.pop()
+    popFromStack() {
+        let popped = this.stack.pop()
 
         if (popped == undefined) {
             return "Stack Underflow"

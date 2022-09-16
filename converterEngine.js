@@ -1,7 +1,7 @@
 class Converter {
     constructor() {
-        this.array = []
-        let current = this.array.length - 1;
+        this.stack = []
+        this.operators = { '+': 1, '-': 1, '/': 2, '*': 2, '$': 3 }
     }
 
     pushToStack(value) {

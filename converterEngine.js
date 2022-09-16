@@ -19,6 +19,11 @@ class Converter {
         }
     }
 
+    stackIsEmpty() {
+        // returns true if stack is empty
+        return !this.stack.length
+    }
+
     showStack() {
         return this.stack;
     }

@@ -28,6 +28,13 @@ class Converter {
     }
 
     convert(expression) {
+
+        if (!expression) return "Expression is empty"
+
+        if (/[a-z]/i.test(expression) == true) {
+            return "Only accepts numbers as operands"
+        }
+
         let convertedExpression = []
         const text = [...new String(expression)]
 
@@ -67,4 +74,33 @@ class Converter {
         console.log("current top " + this.topOfStack());
         return convertedExpression;
     }
+
 }
+
+let con = new Converter()
+
+console.log(con.convert("7+5*3/5$1+(3-2)").join(""));
+
+// error doesnt print last value
+/*
+Scan the symbols of the expression from left to right and for each symbol, do the following:
+
+        if symbol is an operand
+            Print that symbol onto the screen.
+
+        if symbol is a left parenthesis
+            Push it on the stack.
+
+        if symbol is a right parenthesis
+
+            Pop all the operators from the stack upto the first left parenthesis and print them on the screen.
+            Discard the left and right parentheses.
+
+        if symbol is an operator
+
+        if the precedence of the operators in the stack are greater than or equal to the current operator
+            Pop the operators out of the stack and print them onto the screen, and push the current operator onto the stack.
+        else
+            Push the current operator onto the stack.
+
+*/

@@ -25,7 +25,11 @@ class Converter {
     }
 
     showStack() {
-        return this.stack;
+        if (this.stackIsEmpty()) {
+            return "Stack is empty"
+        } else {
+            return this.stack
+        }
     }
 
     topOfStack() {

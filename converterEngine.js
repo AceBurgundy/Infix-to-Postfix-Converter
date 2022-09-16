@@ -1,15 +1,11 @@
 class Converter {
     constructor() {
         this.array = []
-        current = this.array.length - 1;
+        let current = this.array.length - 1;
     }
 
-    empty() {
-        if (this.array.length == null) {
-            return true
-        } else {
-            return false
-        }
+    print() {
+        return this.array
     }
 
     push(value) {
@@ -18,10 +14,12 @@ class Converter {
     }
 
     pop() {
-        if (this.empty()) {
-            return true;
+        let popped = this.array.pop()
+
+        if (popped == undefined) {
+            return "Stack Underflow"
         } else {
-            this.array.pop
+            return popped
         }
     }
 

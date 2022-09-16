@@ -24,6 +24,8 @@ class Converter {
     }
 
     topOfStack() {
+        // returns the current value of the stack
+        if (this.stack[this.stack.length - 1] != undefined) {
         return this.stack[this.stack.length - 1]
     }
 

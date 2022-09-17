@@ -103,13 +103,10 @@ export default class Converter {
                     // pushes current element to the stack
                     this.pushToStack(element)
                     this.log(this.stack, newExpression, "push('" + element + "')")
-                } else if (element == '$') {
-                    newExpression.push(element)
-                    this.log(this.stack, newExpression, "print('" + element + "')")
                 } else {
                     // if element in the stack is less than the current element
                     this.pushToStack(element)
-                    this.log(this.stack, newExpression, "print('" + element + "')")
+                    this.log(this.stack, newExpression, "push('" + element + "')")
                 }
             }
         });
@@ -128,3 +125,5 @@ export default class Converter {
     }
 
 }
+
+//need to fix '$' checking for node module

@@ -16,10 +16,10 @@ document.getElementById('submit').addEventListener("click", () => {
 
     if (conversionLogs == "Expression is empty") {
         makeToastNotification(conversionLogs)
-    } else if (conversionLogs == "Illegal Expression found") {
-        makeToastNotification(conversionLogs)
     } else if (occupied) {
         makeToastNotification("Press new for a new expression")
+    } else if (conversionLogs == "Illegal Expression found") {
+        makeToastNotification(conversionLogs)
     } else if (occupied == false) {
         occupied = true
         right.appendChild(logsContainer)

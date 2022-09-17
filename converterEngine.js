@@ -1,4 +1,4 @@
-class Converter {
+export default class Converter {
     constructor() {
         this.stack = []
         this.operators = { '+': 1, '-': 1, '/': 2, '*': 2, '$': 3 }
@@ -43,7 +43,7 @@ class Converter {
     }
 
     log(stack, convertedExpression, text) {
-        this.logs.push([convertedExpression.join(""), "[" + stack.join("") + "]", text])
+        this.logs.push([convertedExpression.join(""), "Stack: [" + stack.join("") + "]", text])
     }
 
     getLog() {
@@ -61,13 +61,13 @@ class Converter {
             // pushes element to stack if element is a letter or a number
             if (/[a-zA-Z]/i.test(element) == true || +element) {
                 convertedExpression.push(element)
-                this.log(this.stack, convertedExpression, "print(" + element + ")")
+                this.log(this.stack, convertedExpression, "print('" + element + "')")
             }
 
             // pushes element to stack if that element is a "("
             if (element == '(') {
                 this.pushToStack(element)
-                this.log(this.stack, convertedExpression, "push(" + element + ")")
+                this.log(this.stack, convertedExpression, "push('" + element + "')")
             }
 
             // if element is a ")", pops elements off the stack until the next "("
@@ -78,10 +78,11 @@ class Converter {
                     let popped = this.popFromStack()
                     removedElements.push(popped)
                     convertedExpression.push(popped)
+                    this.log(this.stack, convertedExpression, "pop('" + removedElements.join("") + "') and print")
                 }
                 // pops "("
                 this.popFromStack()
-                this.log(this.stack, convertedExpression, "pop(" + removedElements.join("") + ") and print")
+                this.log(this.stack, convertedExpression, "found '(' popping it off the stack")
             }
 
             // if the element is an operator
@@ -93,21 +94,22 @@ class Converter {
                         let poppedOperator = this.popFromStack()
                         convertedExpression.push(poppedOperator)
                         removedOperators.push(poppedOperator)
-                        this.log(this.stack, convertedExpression, "pop(" + removedOperators.join("") + ") and print")
+                        this.log(this.stack, convertedExpression, "pop('" + removedOperators.join("") + "') and print")
                     }
                     // pushes current element to the stack
                     this.pushToStack(element)
-                    this.log(this.stack, convertedExpression, "push(" + element + ")")
+                    this.log(this.stack, convertedExpression, "push('" + element + "')")
                 } else {
                     // if element in the stack is less than the current element
                     this.pushToStack(element)
-                    this.log(this.stack, convertedExpression, "push(" + element + ")")
+                    this.log(this.stack, convertedExpression, "push('" + element + "')")
                 }
             }
         });
 
         // while stack is not empty,
         let removedOperators = []
+        this.log(this.stack, convertedExpression, "popping and printing remaining elements in the stack")
         while (this.topOfStack() != "Stack is empty") {
             let popped = this.popFromStack()
                 // add the remaining elements to the end of the new expression
@@ -121,8 +123,3 @@ class Converter {
     }
 
 }
-
-let infix = new Converter()
-
-console.log(infix.convert("3+5*(5/5)-2$2"))
-console.table(infix.getLog())

@@ -46,10 +46,6 @@ export default class Converter {
         this.logs.push([convertedExpression.join(""), "Stack: [" + stack.join("") + "]", text])
     }
 
-    getLog() {
-        return this.logs;
-    }
-
     convert(expression) {
 
         if (!expression) return "Expression is empty"
@@ -117,9 +113,9 @@ export default class Converter {
             convertedExpression.push(popped)
             this.log(this.stack, convertedExpression, "pop(" + removedOperators.join("") + ") and print")
         }
-        this.log(this.stack, convertedExpression, "stack empty and conversion completed")
+        this.log(this.stack, convertedExpression, "Conversion Done")
 
-        return convertedExpression.join("");
+        return this.logs;
     }
 
 }

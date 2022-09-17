@@ -13,7 +13,7 @@
 
 :root {
     --game-font: 'Press Start 2P', cursive;
-    --text: rgba(155, 155, 155, 1);
+    --text: rgb(255, 255, 255);
 }
 
 body {

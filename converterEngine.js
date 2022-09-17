@@ -1,7 +1,7 @@
 export default class Converter {
     constructor() {
         this.stack = []
-        this.operators = { '+': 1, '-': 1, '/': 2, '*': 2, '$': 3 }
+        this.operators = { '+': 1, '-': 1, '/': 2, '*': 2, '$': 4 }
         this.logs = []
     }
 
@@ -42,8 +42,8 @@ export default class Converter {
         }
     }
 
-    log(stack, convertedExpression, text) {
-        this.logs.push([convertedExpression.join(""), "Stack: [" + stack.join("") + "]", text])
+    log(stack, newExpression, message) {
+        this.logs.push([newExpression.join(""), "Stack: [" + stack.join("") + "]", message])
     }
 
     convert(expression) {
@@ -56,70 +56,73 @@ export default class Converter {
 
         if (expression.length != checkUnapproved(expression)) return "Illegal Expression found"
 
-        let convertedExpression = []
+        let removedElements = []
+        let newExpression = []
         const text = [...new String(expression)]
 
         text.forEach(element => {
             // pushes element to stack if element is a letter or a number
-            if (/[a-zA-Z]/i.test(element) == true || +element) {
-                convertedExpression.push(element)
-                this.log(this.stack, convertedExpression, "print('" + element + "')")
+            if (/[a-zA-Z0-9]/i.test(element)) {
+                newExpression.push(element)
+                this.log(this.stack, newExpression, "print('" + element + "')")
             }
 
             // pushes element to stack if that element is a "("
             if (element == '(') {
                 this.pushToStack(element)
-                this.log(this.stack, convertedExpression, "push('" + element + "')")
+                this.log(this.stack, newExpression, "push('" + element + "')")
             }
 
             // if element is a ")", pops elements off the stack until the next "("
             if (element == ')') {
-                this.log(this.stack, convertedExpression, "found ')' popping stack until next '('")
-                let removedElements = []
+                this.log(this.stack, newExpression, "found ')' popping stack until next '('")
                 while (this.topOfStack() != '(') {
                     let popped = this.popFromStack()
                     removedElements.push(popped)
-                    convertedExpression.push(popped)
-                    this.log(this.stack, convertedExpression, "pop('" + removedElements.join("") + "') and print")
+                    newExpression.push(popped)
+                    this.log(this.stack, newExpression, "pop('" + removedElements.join("") + "') and print")
+                    removedElements = []
                 }
                 // pops "("
                 this.popFromStack()
-                this.log(this.stack, convertedExpression, "found '(' popping it off the stack")
+                this.log(this.stack, newExpression, "'(' found. Popping it off the stack")
             }
 
             // if the element is an operator
+            //Object.keys(operators).includes => iterates through all keys in operators and checks if element is included in it.
             if (Object.keys(this.operators).includes(element)) {
-                let removedOperators = []
                 if (this.operators[this.topOfStack()] >= this.operators[element]) {
                     // pops off all element that are greater than the current element
                     while (this.operators[this.topOfStack()] >= this.operators[element] && Object.keys(this.operators).includes(this.topOfStack())) {
                         let poppedOperator = this.popFromStack()
-                        convertedExpression.push(poppedOperator)
-                        removedOperators.push(poppedOperator)
-                        this.log(this.stack, convertedExpression, "pop('" + removedOperators.join("") + "') and print")
+                        newExpression.push(poppedOperator)
+                        removedElements.push(poppedOperator)
+                        this.log(this.stack, newExpression, "pop('" + removedElements.join("") + "') and print")
+                        removedElements = []
                     }
                     // pushes current element to the stack
                     this.pushToStack(element)
-                    this.log(this.stack, convertedExpression, "push('" + element + "')")
+                    this.log(this.stack, newExpression, "push('" + element + "')")
+                } else if (element == '$') {
+                    newExpression.push(element)
+                    this.log(this.stack, newExpression, "print('" + element + "')")
                 } else {
                     // if element in the stack is less than the current element
                     this.pushToStack(element)
-                    this.log(this.stack, convertedExpression, "push('" + element + "')")
+                    this.log(this.stack, newExpression, "print('" + element + "')")
                 }
             }
         });
 
         // while stack is not empty,
-        let removedOperators = []
-        this.log(this.stack, convertedExpression, "popping and printing remaining elements in the stack")
+        this.log(this.stack, newExpression, "popping and printing remaining elements in the stack")
         while (this.topOfStack() != "Stack is empty") {
             let popped = this.popFromStack()
                 // add the remaining elements to the end of the new expression
-            removedOperators.push(popped)
-            convertedExpression.push(popped)
-            this.log(this.stack, convertedExpression, "pop(" + removedOperators.join("") + ") and print")
+            newExpression.push(popped)
+            this.log(this.stack, newExpression, "pop(" + popped + ") and print")
         }
-        this.log(this.stack, convertedExpression, "Conversion Done")
+        this.log(this.stack, newExpression, "Conversion Done")
 
         return this.logs;
     }

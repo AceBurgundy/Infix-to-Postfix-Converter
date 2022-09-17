@@ -5,13 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="script.js" defer></script>
+    <script src="script.js" type='module'></script>
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Infix to Postfix</title>
 </head>
 
-<body>
-
+<body id="body">
+    <p class="toast-message"></p>
+    <div class="error">
+        <p class="error-message"></p>
+    </div>
+    <div id="left">
+        <button id="new">New</button>
+        <div id="left-top">
+            <p id="conversion-result"></p>
+            <p id="stack-log"></p>
+        </div>
+        <div id="left-bottom">
+            <input type="text" id="infix-input">
+            <button id="submit">CONVERT</button>
+        </div>
+    </div>
+    <div id="right">
+    </div>
 </body>
 
 </html>

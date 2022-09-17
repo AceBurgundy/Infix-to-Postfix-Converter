@@ -2,6 +2,7 @@ class Converter {
     constructor() {
         this.stack = []
         this.operators = { '+': 1, '-': 1, '/': 2, '*': 2, '$': 3 }
+        this.logs = []
     }
 
     pushToStack(value) {
@@ -41,80 +42,87 @@ class Converter {
         }
     }
 
+    log(stack, convertedExpression, text) {
+        this.logs.push([convertedExpression.join(""), "[" + stack.join("") + "]", text])
+    }
+
+    getLog() {
+        return this.logs;
+    }
+
     convert(expression) {
 
         if (!expression) return "Expression is empty"
 
-        if (/[a-z]/i.test(expression) == true) {
-            return "Only accepts numbers as operands"
-        }
-
         let convertedExpression = []
         const text = [...new String(expression)]
 
-        text.forEach(currentElementInTheExpression => {
-            // + returns true if value is number
-            if (+currentElementInTheExpression) {
-                convertedExpression.push(currentElementInTheExpression)
+        text.forEach(element => {
+            // pushes element to stack if element is a letter or a number
+            if (/[a-zA-Z]/i.test(element) == true || +element) {
+                convertedExpression.push(element)
+                this.log(this.stack, convertedExpression, "print(" + element + ")")
             }
-            if (currentElementInTheExpression == '(') {
-                this.pushToStack(currentElementInTheExpression)
+
+            // pushes element to stack if that element is a "("
+            if (element == '(') {
+                this.pushToStack(element)
+                this.log(this.stack, convertedExpression, "push(" + element + ")")
             }
-            if (currentElementInTheExpression == ')') {
+
+            // if element is a ")", pops elements off the stack until the next "("
+            if (element == ')') {
+                this.log(this.stack, convertedExpression, "found ')' popping stack until next '('")
+                let removedElements = []
                 while (this.topOfStack() != '(') {
-                    convertedExpression.push(this.popFromStack())
+                    let popped = this.popFromStack()
+                    removedElements.push(popped)
+                    convertedExpression.push(popped)
                 }
                 // pops "("
                 this.popFromStack()
+                this.log(this.stack, convertedExpression, "pop(" + removedElements.join("") + ") and print")
             }
-            if (Object.keys(this.operators).includes(currentElementInTheExpression)) {
-                if (this.operators[this.topOfStack()] >= this.operators[currentElementInTheExpression]) {
-                    while (this.operators[this.topOfStack()] >= this.operators[currentElementInTheExpression] && Object.keys(this.operators).includes(this.topOfStack())) {
-                        convertedExpression.push(this.popFromStack())
+
+            // if the element is an operator
+            if (Object.keys(this.operators).includes(element)) {
+                let removedOperators = []
+                if (this.operators[this.topOfStack()] >= this.operators[element]) {
+                    // pops off all element that are greater than the current element
+                    while (this.operators[this.topOfStack()] >= this.operators[element] && Object.keys(this.operators).includes(this.topOfStack())) {
+                        let poppedOperator = this.popFromStack()
+                        convertedExpression.push(poppedOperator)
+                        removedOperators.push(poppedOperator)
+                        this.log(this.stack, convertedExpression, "pop(" + removedOperators.join("") + ") and print")
                     }
-                    this.pushToStack(currentElementInTheExpression)
+                    // pushes current element to the stack
+                    this.pushToStack(element)
+                    this.log(this.stack, convertedExpression, "push(" + element + ")")
                 } else {
-                    this.pushToStack(currentElementInTheExpression)
+                    // if element in the stack is less than the current element
+                    this.pushToStack(element)
+                    this.log(this.stack, convertedExpression, "push(" + element + ")")
                 }
             }
-            // if (currentElementInTheExpression == this.showStack()) {
-            //     // convertedExpression.push(this.popFromStack())
-            //     console.log(currentElementInTheExpression);
-            //     convertedExpression.push(currentElementInTheExpression)
-            // }
         });
 
-        console.log("current stack " + this.showStack().join());
-        console.log("current top " + this.topOfStack());
-        return convertedExpression;
+        // while stack is not empty,
+        let removedOperators = []
+        while (this.topOfStack() != "Stack is empty") {
+            let popped = this.popFromStack()
+                // add the remaining elements to the end of the new expression
+            removedOperators.push(popped)
+            convertedExpression.push(popped)
+            this.log(this.stack, convertedExpression, "pop(" + removedOperators.join("") + ") and print")
+        }
+        this.log(this.stack, convertedExpression, "stack empty and conversion completed")
+
+        return convertedExpression.join("");
     }
 
 }
 
-let con = new Converter()
+let infix = new Converter()
 
-console.log(con.convert("7+5*3/5$1+(3-2)").join(""));
-
-// error doesnt print last value
-/*
-Scan the symbols of the expression from left to right and for each symbol, do the following:
-
-        if symbol is an operand
-            Print that symbol onto the screen.
-
-        if symbol is a left parenthesis
-            Push it on the stack.
-
-        if symbol is a right parenthesis
-
-            Pop all the operators from the stack upto the first left parenthesis and print them on the screen.
-            Discard the left and right parentheses.
-
-        if symbol is an operator
-
-        if the precedence of the operators in the stack are greater than or equal to the current operator
-            Pop the operators out of the stack and print them onto the screen, and push the current operator onto the stack.
-        else
-            Push the current operator onto the stack.
-
-*/
+console.log(infix.convert("3+5*(5/5)-2$2"))
+console.table(infix.getLog())

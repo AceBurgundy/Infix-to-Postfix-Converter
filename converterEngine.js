@@ -51,7 +51,7 @@ export default class Converter {
         if (!expression) return "Expression is empty"
 
         const checkUnapproved = (expression) => {
-            return (expression.match(/[a-zA-Z0-9\-\+\\\*\$]/g) || []).length;
+            return (expression.match(/[a-zA-Z0-9\-\+\/\*\$\(\)]/g) || []).length;
         }
 
         if (expression.length != checkUnapproved(expression)) return "Illegal Expression found"

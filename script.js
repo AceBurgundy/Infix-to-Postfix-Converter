@@ -12,16 +12,14 @@ let occupied = false
 let newExpression = document.getElementById('infix-input')
 
 document.getElementById('submit').addEventListener("click", () => {
-    let conversion = expression.convert(newExpression.value)
-    let conversionLogs = expression.getLog()
+    let conversionLogs = expression.convert(newExpression.value)
 
-    if (conversion == "Expression is empty") {
-        makeToastNotification(conversion)
+    if (conversionLogs == "Expression is empty") {
+        makeToastNotification(conversionLogs)
     } else if (occupied) {
         makeToastNotification("Press new for a new expression")
     } else if (occupied == false) {
         occupied = true
-        conversionResult.textContent = conversion
         right.appendChild(logsContainer)
         for (let index = 0; index < conversionLogs.length; index++) {
             let logs = document.createElement('li')
@@ -31,9 +29,8 @@ document.getElementById('submit').addEventListener("click", () => {
             logs.innerHTML = conversionLogs[index][2]
             logsContainer.append(logs)
         }
-
-        logsContainer.scroll({ Top: 0 })
-
+        conversionResult.textContent = conversionLogs[conversionLogs.length - 1][0]
+        conversionLog.textContent = conversionLogs[conversionLogs.length - 1][1]
         document.querySelectorAll('.log').forEach(log => {
             log.addEventListener("click", () => {
                 occupied = true
@@ -53,5 +50,11 @@ document.getElementById('new').addEventListener("click", () => {
 })
 
 if (window.screen.availHeight > window.screen.availWidth) {
-    document.getElementById('body').style.flexDirection = 'row'
+    document.getElementById('body').style.flexDirection = 'column'
+    document.getElementById('submit').textContent = 'C'
+    document.getElementById('left').style.width = '100vw'
+    document.getElementById('right').style.width = '100vw'
+    document.getElementById('left').style.height = '70%'
+    document.getElementById('right').style.height = '30%'
+    document.getElementById('left-bottom').style.marginBottom = '1em'
 }

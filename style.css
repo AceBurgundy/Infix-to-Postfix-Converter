@@ -17,13 +17,28 @@
 }
 
 body {
-    height: 100vh;
     width: 100vw;
     display: flex;
     flex-direction: row;
     background-color: #171c22;
     box-sizing: border-box;
     font-size: 16px;
+}
+
+#body.phone {
+    position: relative;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#left.phone {
+    width: 100vw;
+    height: 70vh;
+}
+
+#right.phone {
+    width: 100%;
+    height: 30vh;
 }
 
 #left {
@@ -34,7 +49,7 @@ body {
 
 .toast-message {
     font-family: var(--game-font);
-    font-size: 3rem;
+    font-size: calc(16px + 1.5 * ((100vw) / 60));
     background-color: #25292C;
     color: white;
     padding: 0.5em;
@@ -64,8 +79,7 @@ body {
 #conversion-result,
 #stack-log {
     font-size: calc(16px + 1.5 * ((100vw) / 60));
-    display: flex;
-    flex-wrap: wrap;
+    word-wrap: break-word;
     letter-spacing: 0.5rem;
 }
 
@@ -104,7 +118,6 @@ body {
     width: 30%;
     position: relative;
     background-color: #1d2219;
-    padding: 2em 0 2em 2em;
     overflow-y: scroll;
 }
 
@@ -113,7 +126,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    gap: 3em;
+    gap: 2em;
     list-style: none;
 }
 
@@ -128,6 +141,15 @@ body {
     font-size: calc(16px + 1 * ((100vw) / 200));
     transition: 50ms;
     cursor: pointer;
+    margin-left: 2em;
+}
+
+.log:first-of-type {
+    margin-top: 1em;
+}
+
+.log:last-of-type {
+    margin-bottom: 1em;
 }
 
 .log:hover {

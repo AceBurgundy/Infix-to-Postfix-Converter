@@ -1,5 +1,5 @@
 import Converter from './converterEngine.js'
-import { makeToastNotification, makeError } from './helper.js'
+import { makeToastNotification } from './helper.js'
 
 let expression = new Converter()
 
@@ -16,6 +16,8 @@ document.getElementById('submit').addEventListener("click", () => {
 
     if (conversionLogs == "Expression is empty") {
         makeToastNotification(conversionLogs)
+    } else if (conversionLogs == "Illegal Expression found") {
+        makeToastNotification(conversionLogs)
     } else if (occupied) {
         makeToastNotification("Press new for a new expression")
     } else if (occupied == false) {
@@ -29,6 +31,7 @@ document.getElementById('submit').addEventListener("click", () => {
             logs.innerHTML = conversionLogs[index][2]
             logsContainer.append(logs)
         }
+
         conversionResult.textContent = conversionLogs[conversionLogs.length - 1][0]
         conversionLog.textContent = conversionLogs[conversionLogs.length - 1][1]
         document.querySelectorAll('.log').forEach(log => {
@@ -50,11 +53,12 @@ document.getElementById('new').addEventListener("click", () => {
 })
 
 if (window.screen.availHeight > window.screen.availWidth) {
-    document.getElementById('body').style.flexDirection = 'column'
+    document.getElementById('body').classList.add("phone")
+    document.getElementById('html').style.overflow = "hidden"
     document.getElementById('submit').textContent = 'C'
-    document.getElementById('left').style.width = '100vw'
-    document.getElementById('right').style.width = '100vw'
-    document.getElementById('left').style.height = '70%'
-    document.getElementById('right').style.height = '30%'
+    document.getElementById('left').classList.add("phone")
+    document.getElementById('right').classList.add("phone")
     document.getElementById('left-bottom').style.marginBottom = '1em'
+} else {
+    document.getElementById('body').style.height = '100vh'
 }

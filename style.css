@@ -55,7 +55,7 @@ body {
     padding: 0.5em;
     position: absolute;
     z-index: 2;
-    top: -20%;
+    top: -90%;
     left: 50%;
     transform: translateX(-50%);
     transition: 500ms ease-in-out;

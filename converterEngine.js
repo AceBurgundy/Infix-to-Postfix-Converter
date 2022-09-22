@@ -114,10 +114,17 @@ export default class Converter {
         // while stack is not empty,
         this.log(this.stack, newExpression, "popping and printing remaining elements in the stack")
         while (this.topOfStack() != "Stack is empty") {
+     
+            if (this.topOfStack() == "(" || this.topOfStack() == ")") {
+            this.popFromStack()
+            this.log(this.stack, newExpression, "pop(" + popped + ") off the stack")
+            } else {
+            // add the remaining elements to the end of the new expression
             let popped = this.popFromStack()
-                // add the remaining elements to the end of the new expression
             newExpression.push(popped)
+            
             this.log(this.stack, newExpression, "pop(" + popped + ") and print")
+            }
         }
         this.log(this.stack, newExpression, "Conversion Done")
 

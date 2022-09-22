@@ -116,13 +116,12 @@ export default class Converter {
         while (this.topOfStack() != "Stack is empty") {
      
             if (this.topOfStack() == "(" || this.topOfStack() == ")") {
-            this.popFromStack()
-            this.log(this.stack, newExpression, "pop(" + popped + ") off the stack")
+            // remove elements from the stack if the element is either "(" or ")"
+            this.log(this.stack, newExpression, "pop(" + this.popFromStack() + ") off the stack")
             } else {
             // add the remaining elements to the end of the new expression
             let popped = this.popFromStack()
             newExpression.push(popped)
-            
             this.log(this.stack, newExpression, "pop(" + popped + ") and print")
             }
         }

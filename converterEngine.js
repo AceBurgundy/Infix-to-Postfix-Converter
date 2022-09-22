@@ -85,7 +85,7 @@ export default class Converter {
                 }
                 // pops "("
                 this.popFromStack()
-                this.log(this.stack, newExpression, "'(' found. Popping it off the stack")
+                this.log(this.stack, newExpression, "'(' found. popping it off the stack")
             }
 
             // if the element is an operator
@@ -117,12 +117,12 @@ export default class Converter {
      
             if (this.topOfStack() == "(" || this.topOfStack() == ")") {
             // remove elements from the stack if the element is either "(" or ")"
-            this.log(this.stack, newExpression, "pop(" + this.popFromStack() + ") off the stack")
+            this.log(this.stack, newExpression, "pop('" + this.popFromStack() + "') off the stack")
             } else {
             // add the remaining elements to the end of the new expression
             let popped = this.popFromStack()
             newExpression.push(popped)
-            this.log(this.stack, newExpression, "pop(" + popped + ") and print")
+            this.log(this.stack, newExpression, "pop('" + popped + "') and print")
             }
         }
         this.log(this.stack, newExpression, "Conversion Done")
